@@ -1,0 +1,65 @@
+<div class="card">
+  <h1 style="margin-top:0"><%= @announcement.title %></h1>
+  <p style="color:#666;font-size:0.85rem;margin-bottom:1rem">
+    Posted by <%= @announcement.user.full_name %> · <%= @announcement.created_at.to_fs(:long) %>
+  </p>
+
+  <div style="line-height:1.7"><%= simple_format @announcement.body %></div>
+
+  <div style="margin-top:1.25rem;display:flex;gap:0.75rem">
+    <%= link_to "← Back", announcements_path, class: "btn btn-secondary btn-sm" %>
+    <% if current_user.admin? || current_user.teacher? %>
+      <%= link_to "Edit", edit_announcement_path(@announcement), class: "btn btn-sm" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">
+    Comments
+    <span style="font-weight:normal;font-size:0.9rem;color:#888">(<%= @comments.size %>)</span>
+  </h2>
+
+  <% if @comments.any? %>
+    <div style="display:flex;flex-direction:column;gap:0.85rem;margin-bottom:1.25rem">
+      <% @comments.each do |comment| %>
+        <div style="display:flex;gap:0.75rem;align-items:flex-start">
+          <% if comment.user.avatar.attached? %>
+            <%= image_tag comment.user.avatar, class: "avatar-sm", style: "flex-shrink:0", alt: "" %>
+          <% else %>
+            <div class="avatar-sm" style="background:#dde3ea;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:600;color:#555;flex-shrink:0">
+              <%= comment.user.full_name.first.upcase %>
+            </div>
+          <% end %>
+          <div style="flex:1;background:#f7f9fc;border-radius:8px;padding:0.6rem 0.85rem">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.25rem">
+              <strong style="font-size:0.9rem"><%= comment.user.full_name %></strong>
+              <span style="font-size:0.75rem;color:#999"><%= comment.created_at.to_fs(:short) %></span>
+            </div>
+            <p style="margin:0;font-size:0.9rem;line-height:1.5"><%= comment.body %></p>
+            <% if current_user.admin? || current_user.teacher? || comment.user == current_user %>
+              <div style="margin-top:0.4rem">
+                <%= button_to "Delete", announcement_comment_path(@announcement, comment),
+                      method: :delete,
+                      class: "btn btn-danger btn-sm",
+                      data: { turbo_confirm: "Delete this comment?" } %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p style="color:#888;font-size:0.9rem">No comments yet. Be the first!</p>
+  <% end %>
+
+  <h3 style="margin-bottom:0.5rem">Leave a comment</h3>
+  <%= form_with url: announcement_comments_path(@announcement), method: :post do |f| %>
+    <div style="display:flex;gap:0.6rem;align-items:flex-end">
+      <div style="flex:1;margin:0">
+        <%= f.text_area :body, rows: 2, placeholder: "Write a comment…", style: "width:100%;resize:vertical" %>
+      </div>
+      <%= f.submit "Post", class: "btn" %>
+    </div>
+  <% end %>
+</div>

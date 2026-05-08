@@ -1,0 +1,59 @@
+<div class="card" style="max-width:560px">
+  <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1rem">
+    <% if @user.avatar.attached? %>
+      <%= image_tag @user.avatar, class: "profile-avatar", alt: "Profile picture" %>
+    <% else %>
+      <div class="profile-avatar" style="background:#dde3ea;display:flex;align-items:center;justify-content:center;color:#888;font-size:2rem">
+        <%= @user.full_name.first.upcase %>
+      </div>
+    <% end %>
+    <div>
+      <h1 style="margin:0 0 0.25rem"><%= @user.full_name %></h1>
+      <p style="margin:0;color:#555;font-size:0.9rem"><%= @user.email %></p>
+      <p style="margin:0.25rem 0 0;color:#555;font-size:0.85rem"><%= @user.role.capitalize %></p>
+    </div>
+  </div>
+
+  <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-secondary btn-sm" %>
+</div>
+
+<% if @user.parent? || @user.student? %>
+  <div class="card" style="max-width:560px">
+    <h2 style="margin-top:0">Family Connections</h2>
+
+    <% if @connections.any? %>
+      <div style="margin-bottom:1rem">
+        <% @connections.each do |conn| %>
+          <% member = @user.parent? ? conn.student : conn.parent %>
+          <div class="connection-item">
+            <div style="flex:1">
+              <strong><%= member.full_name %></strong>
+              <span style="color:#888;font-size:0.85rem;margin-left:0.4rem"><%= member.email %></span>
+            </div>
+            <% if conn.confirmed? %>
+              <span class="badge badge-success">Confirmed</span>
+            <% else %>
+              <span class="badge badge-pending">Pending</span>
+            <% end %>
+            <%= button_to "Remove", family_connection_path(conn), method: :delete,
+                  class: "btn btn-danger btn-sm",
+                  data: { turbo_confirm: "Remove this connection?" } %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p style="color:#888">No family connections yet.</p>
+    <% end %>
+
+    <h3><%= @user.parent? ? "Add a Child" : "Add a Parent" %></h3>
+    <%= form_with url: family_connections_path, method: :post do |f| %>
+      <div style="display:flex;gap:0.5rem;align-items:flex-end">
+        <div style="flex:1;margin-bottom:0">
+          <%= f.label :email, "Email address" %>
+          <%= f.email_field :email, placeholder: "their@email.com" %>
+        </div>
+        <%= f.submit(@user.parent? ? "Link Child" : "Link Parent", class: "btn") %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

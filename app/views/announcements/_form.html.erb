@@ -1,0 +1,21 @@
+<%= form_with model: announcement do |f| %>
+  <% if announcement.errors.any? %>
+    <ul>
+      <% announcement.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body, rows: 8 %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

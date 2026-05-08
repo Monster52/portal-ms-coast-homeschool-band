@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "MS Coast Band Portal" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="MS Coast Band Portal">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <% if user_signed_in? %>
+      <nav class="app-nav">
+        <%= link_to "MS Coast Band", root_path, class: "nav-brand" %>
+
+        <%= link_to "Announcements", announcements_path %>
+
+        <% if current_user.admin? || current_user.teacher? %>
+          <%= link_to "New Announcement", new_announcement_path %>
+        <% end %>
+
+        <%- unread = current_user.conversations
+              .joins(:messages)
+              .where(messages: { read_at: nil })
+              .where.not(messages: { user_id: current_user.id })
+              .distinct.count %>
+        <%= link_to conversations_path do %>
+          Messages<% if unread > 0 %> <span class="nav-badge"><%= unread %></span><% end %>
+        <% end %>
+
+        <% if current_user.admin? %>
+          <div class="nav-divider"></div>
+          <%= link_to "All Users", admin_users_path %>
+        <% end %>
+
+        <div class="nav-divider"></div>
+
+        <% if current_user.avatar.attached? %>
+          <%= image_tag current_user.avatar,
+                        class: "nav-avatar", alt: "" %>
+        <% end %>
+        <%= link_to current_user.full_name, profile_path %>
+        <%= link_to "Edit Profile", edit_profile_path %>
+        <%= link_to "Sign Out", destroy_user_session_path, data: { turbo_method: :delete } %>
+      </nav>
+    <% end %>
+
+    <% if notice.present? %>
+      <div class="flash notice"><%= notice %></div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="flash alert"><%= alert %></div>
+    <% end %>
+
+    <div class="container">
+      <%= yield %>
+    </div>
+  </body>
+</html>

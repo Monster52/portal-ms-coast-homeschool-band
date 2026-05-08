@@ -1,0 +1,49 @@
+<h1>Edit User</h1>
+
+<div class="card" style="max-width:480px">
+  <%= form_with model: [:admin, @user] do |f| %>
+    <% if @user.errors.any? %>
+      <ul class="error-list">
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <div>
+      <%= f.label :first_name %>
+      <%= f.text_field :first_name %>
+    </div>
+
+    <div>
+      <%= f.label :last_name %>
+      <%= f.text_field :last_name %>
+    </div>
+
+    <div>
+      <%= f.label :email %>
+      <%= f.email_field :email %>
+    </div>
+
+    <div>
+      <%= f.label :role %>
+      <%= f.select :role, User::ROLES.map { |r| [r.capitalize, r] }, {}, class: "" %>
+    </div>
+
+    <div>
+      <%= f.label :admin, "Admin access" %>
+      <%= f.check_box :admin %> Grant admin privileges
+    </div>
+
+    <div style="display:flex;gap:0.75rem;align-items:center;margin-top:1.25rem">
+      <%= f.submit "Save Changes", class: "btn" %>
+      <%= link_to "Cancel", admin_users_path, class: "btn btn-secondary" %>
+      <% unless @user == current_user %>
+        <%= button_to "Delete User", admin_user_path(@user), method: :delete,
+              class: "btn btn-danger",
+              data: { turbo_confirm: "Delete #{@user.email}? This cannot be undone." },
+              style: "margin-left:auto" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,61 @@
+<% other = @conversation.other_participant(current_user) %>
+
+<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+  <%= link_to "← Messages", conversations_path, style: "color:#555;text-decoration:none;font-size:0.9rem" %>
+  <% if other&.avatar&.attached? %>
+    <%= image_tag other.avatar, class: "avatar-sm", alt: "" %>
+  <% elsif other %>
+    <div class="avatar-sm" style="background:#dde3ea;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:600;color:#555;flex-shrink:0">
+      <%= other.full_name.first.upcase %>
+    </div>
+  <% end %>
+  <h1 style="margin:0;font-size:1.2rem"><%= other&.full_name %></h1>
+</div>
+
+<div class="card" style="padding:0;margin-bottom:1rem">
+  <% if @messages.any? %>
+    <div id="messages" style="padding:1rem;display:flex;flex-direction:column;gap:0.75rem;max-height:520px;overflow-y:auto">
+      <% @messages.each do |msg| %>
+        <% mine = msg.sender == current_user %>
+        <div style="display:flex;flex-direction:column;align-items:<%= mine ? 'flex-end' : 'flex-start' %>">
+          <div style="
+            max-width:72%;
+            background:<%= mine ? '#1e3a5f' : '#f0f4f8' %>;
+            color:<%= mine ? '#fff' : '#1a1a1a' %>;
+            border-radius:<%= mine ? '16px 16px 4px 16px' : '16px 16px 16px 4px' %>;
+            padding:0.55rem 0.9rem;
+            font-size:0.92rem;
+            line-height:1.45;
+          ">
+            <%= simple_format msg.body %>
+          </div>
+          <span style="font-size:0.72rem;color:#999;margin-top:0.2rem">
+            <%= mine ? 'You' : msg.sender.full_name %> · <%= msg.created_at.to_fs(:short) %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p style="padding:1.25rem;color:#888;margin:0">No messages yet. Send the first one!</p>
+  <% end %>
+</div>
+
+<% if current_user.can_message? %>
+  <div class="card">
+    <%= form_with url: conversation_messages_path(@conversation), method: :post do |f| %>
+      <div style="display:flex;gap:0.6rem;align-items:flex-end">
+        <div style="flex:1;margin:0">
+          <textarea name="body" rows="2" style="width:100%;resize:vertical" placeholder="Write a message…"></textarea>
+        </div>
+        <%= f.submit "Send", class: "btn" %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p style="color:#888;font-size:0.9rem">You can read messages but your role cannot send replies.</p>
+<% end %>
+
+<script>
+  const el = document.getElementById('messages');
+  if (el) el.scrollTop = el.scrollHeight;
+</script>

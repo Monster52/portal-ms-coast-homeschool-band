@@ -1,0 +1,167 @@
+/*
+ * Application styles
+ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1a1a1a;
+  background: #f5f5f5;
+  margin: 0;
+}
+
+/* ── Navbar ── */
+nav.app-nav {
+  background: #1e3a5f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 1.5rem;
+  height: 56px;
+}
+
+nav.app-nav .nav-brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  text-decoration: none;
+  margin-right: auto;
+}
+
+nav.app-nav a, nav.app-nav .nav-label {
+  color: #cbd8e8;
+  text-decoration: none;
+  padding: 0 0.9rem;
+  line-height: 56px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+nav.app-nav a:hover { color: #fff; }
+
+.nav-badge {
+  display: inline-block;
+  background: #e53935;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 0 5px;
+  line-height: 16px;
+  vertical-align: middle;
+}
+
+nav.app-nav .nav-divider {
+  width: 1px;
+  height: 24px;
+  background: #2e5080;
+  margin: 0 0.25rem;
+}
+
+nav.app-nav .nav-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 0.4rem;
+}
+
+/* ── Flash messages ── */
+.flash {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  border-left: 4px solid transparent;
+}
+.flash.notice { background: #e7f5e9; border-color: #2e7d32; color: #1b5e20; }
+.flash.alert  { background: #fdecea; border-color: #c62828; color: #7f0000; }
+
+/* ── Page container ── */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Cards / panels ── */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Typography ── */
+h1 { font-size: 1.6rem; margin: 0 0 1rem; }
+h2 { font-size: 1.2rem; margin: 1.25rem 0 0.5rem; }
+h3 { font-size: 1rem;   margin: 1rem 0 0.4rem; }
+
+/* ── Tables ── */
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid #e0e0e0; font-size: 0.9rem; }
+th { background: #f0f4f8; font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafafa; }
+
+/* ── Forms ── */
+form div { margin-bottom: 1rem; }
+label { display: block; font-weight: 500; margin-bottom: 0.25rem; font-size: 0.9rem; }
+input[type=text], input[type=email], input[type=password], textarea, select {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus,
+textarea:focus, select:focus {
+  outline: none;
+  border-color: #1e3a5f;
+  box-shadow: 0 0 0 2px rgba(30,58,95,.15);
+}
+input[type=file] { font-size: 0.9rem; }
+
+/* ── Buttons ── */
+.btn, input[type=submit], button[type=submit] {
+  display: inline-block;
+  padding: 0.45rem 1.1rem;
+  background: #1e3a5f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.btn:hover, input[type=submit]:hover, button[type=submit]:hover { background: #163058; }
+.btn-danger { background: #c62828; }
+.btn-danger:hover { background: #a31515; }
+.btn-secondary { background: #5a5a5a; }
+.btn-secondary:hover { background: #444; }
+.btn-sm { padding: 0.25rem 0.65rem; font-size: 0.8rem; }
+
+/* ── Links ── */
+a { color: #1e3a5f; }
+a:hover { color: #163058; }
+
+/* ── Errors ── */
+.error-list { background: #fdecea; border: 1px solid #ef9a9a; border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 1rem; }
+.error-list li { color: #7f0000; font-size: 0.9rem; }
+
+/* ── Profile avatar ── */
+.profile-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd; }
+.avatar-sm { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+
+/* ── Family connection list ── */
+.connection-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0; }
+.connection-item:last-child { border-bottom: none; }
+.badge { font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 12px; }
+.badge-success { background: #e7f5e9; color: #2e7d32; }
+.badge-pending { background: #fff8e1; color: #e65100; }

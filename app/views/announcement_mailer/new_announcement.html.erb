@@ -1,0 +1,11 @@
+<h1>New Announcement</h1>
+
+<p>Hi <%= @recipient.full_name.presence || @recipient.email %>,</p>
+
+<p>A new announcement has been posted:</p>
+
+<h2><%= @announcement.title %></h2>
+
+<p><%= simple_format(@announcement.body) %></p>
+
+<p>Posted by <%= @announcement.user.full_name %></p>

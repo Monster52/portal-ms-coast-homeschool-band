@@ -1,0 +1,11 @@
+New Announcement
+
+Hi <%= @recipient.full_name.presence || @recipient.email %>,
+
+A new announcement has been posted:
+
+<%= @announcement.title %>
+---
+<%= @announcement.body %>
+
+Posted by <%= @announcement.user.full_name %>

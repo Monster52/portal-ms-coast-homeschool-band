@@ -1,0 +1,39 @@
+<h1>All Users <span style="font-weight:normal;font-size:1rem;color:#666">(<%= @users.count %>)</span></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Admin</th>
+      <th>Joined</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td>
+          <% if user.avatar.attached? %>
+            <%= image_tag user.avatar, class: "avatar-sm", alt: "" %>
+          <% end %>
+        </td>
+        <td><%= user.full_name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role.capitalize %></td>
+        <td><%= user.admin? ? "Yes" : "—" %></td>
+        <td><%= user.created_at.to_fs(:short) %></td>
+        <td style="white-space:nowrap">
+          <%= link_to "Edit", edit_admin_user_path(user), class: "btn btn-sm btn-secondary" %>
+          <% unless user == current_user %>
+            <%= button_to "Delete", admin_user_path(user), method: :delete,
+                  class: "btn btn-sm btn-danger",
+                  data: { turbo_confirm: "Delete #{user.email}? This cannot be undone." } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

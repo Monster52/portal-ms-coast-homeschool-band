@@ -1,0 +1,25 @@
+<h1>New Message</h1>
+
+<div class="card" style="max-width:540px">
+  <%= form_with url: conversations_path, method: :post do |f| %>
+    <div>
+      <label for="recipient_id">To</label>
+      <select name="recipient_id" id="recipient_id" style="width:100%">
+        <option value="">— Select a recipient —</option>
+        <% @recipient_options.each do |user| %>
+          <option value="<%= user.id %>"><%= user.full_name %> (<%= user.role.capitalize %>)</option>
+        <% end %>
+      </select>
+    </div>
+
+    <div>
+      <label for="body">Message</label>
+      <textarea name="body" id="body" rows="5" style="width:100%" placeholder="Write your message…"></textarea>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-top:1rem">
+      <%= f.submit "Send", class: "btn" %>
+      <%= link_to "Cancel", conversations_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

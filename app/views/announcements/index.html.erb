@@ -1,0 +1,16 @@
+<h1>Announcements</h1>
+
+<% if current_user.admin? || current_user.teacher? %>
+  <%= link_to "New Announcement", new_announcement_path %>
+<% end %>
+
+<% @announcements.each do |announcement| %>
+  <article>
+    <h2><%= link_to announcement.title, announcement %></h2>
+    <p>Posted by <%= announcement.user.full_name %> on <%= announcement.created_at.to_fs(:long) %></p>
+    <% if current_user.admin? || current_user.teacher? %>
+      <%= link_to "Edit", edit_announcement_path(announcement) %>
+      <%= button_to "Delete", announcement, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+    <% end %>
+  </article>
+<% end %>
