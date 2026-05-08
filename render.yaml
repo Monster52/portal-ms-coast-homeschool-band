@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: portal-ms-coast-homeschool-band
+    env: ruby
+    buildCommand: bundle install && bundle exec rails assets:precompile && bundle exec rails db:migrate
+    startCommand: bundle exec rails server -b 0.0.0.0 -p $PORT
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_MASTER_KEY
+        fromFile: config/master.key
