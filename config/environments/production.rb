@@ -1,13 +1,8 @@
 require "active_support/core_ext/integer/time"
 
-Rails.application.config.hosts << "https://mscoast-portal.up.railway.app/"
-
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-   config.hosts = [
-    "https://mscoast-portal.up.railway.app/"
-  ]
 
   # Code is not reloaded between requests.
   config.enable_reloading = false
@@ -92,6 +87,7 @@ Rails.application.configure do
   #   "example.com",     # Allow requests from example.com
   #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
   # ]
+  config.hosts << "mscoast-portal.up.railway.app"
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
